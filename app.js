@@ -44,7 +44,7 @@ app.get("/compose", (req, res) => {
   res.render("compose");
 })
 app.get("/posts/:x", (req, res) => {
-  let reqTitle = lodash.lowerCase(req.params.x);
+  let reqTitle = req.params.x;
   Post.findOne({_id: reqTitle}, function (err, result) {
     if(!err){
       res.render("post", {title: result.title, detail: result.body});
