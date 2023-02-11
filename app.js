@@ -43,22 +43,25 @@ app.get("/contact", (req, res) => {
 app.get("/compose", (req, res) => {
   res.render("compose");
 })
-// app.get("/posts/:x", (req, res) => {
-//   let reqTitle = lodash.lowerCase(req.params.x);
-//   posts.forEach(function(post){
-//     if(lodash.lowerCase(post.title) === reqTitle){
-//       res.render("post", {title: post.title, detail: post.body});
-//     }
-//   })
-// })
+app.get("/posts/:x", (req, res) => {
+  let reqTitle = lodash.lowerCase(req.params.x);
+  Post.findOne({_id: reqTitle}, function (err, result) {
+    if(!err){
+      res.render("post", {title: result.title, detail: result.body});
+    }
+  });
+})
 
 app.post("/compose", (req, res) => {
   const post = new Post({
     title: req.body.postTitle,
     body: req.body.postBody
   });
-  post.save();
-  res.redirect("/");
+  post.save(function (err) {
+    if(!err){
+      res.redirect("/");
+    }
+  });
 
   // const post = {
   //   title: req.body.postTitle,
